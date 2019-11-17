@@ -4,6 +4,12 @@
 {% endif %}
 
 {% if grafana_init == False %}
+grafana-pkgs:
+    pkg.installed:
+        - pkgs:
+            - adduser
+            - libfontconfig
+            
 grafana-init-script:
     cmd.script:
         - source: salt://grafana/init_script.sh
