@@ -3,12 +3,6 @@
     {% set grafana_init = True %}
 {% endif %}
 
-grafana-pkgs:
-    pkg.installed:
-        - pkgs:
-            - adduser
-            - libfontconfig
-
 {% if grafana_init == False %}
 grafana-init-script:
     cmd.script:
