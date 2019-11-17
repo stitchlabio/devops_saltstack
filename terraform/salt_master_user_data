@@ -14,6 +14,10 @@ sudo apt-get -y install salt-master
 
 # Salt master config
 cat <<'EOF' >> /etc/salt/master
+pillar_roots:
+  base:
+    - /srv/pillar
+
 file_roots:
     base:
         - /srv/salt
@@ -29,6 +33,5 @@ cp -ar /tmp/sample/source/* /srv/
 # Salt master config
 cat <<'EOF' >> /root/salt_script.sh
 salt '*' grains.append roles influxdb
-salt '*' grains.append roles kapacitor
 salt '*' grains.append roles grafana
 EOF
