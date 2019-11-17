@@ -9,7 +9,7 @@ data "aws_availability_zones" "available" {}
 
 resource "aws_vpc" "main" {
   cidr_block = "10.150.0.0/16"
-  tags {
+  tags = {
     Name = "${var.tag_name}-vpc"
  }
 }
@@ -20,7 +20,7 @@ resource "aws_subnet" "main" {
   availability_zone = "${data.aws_availability_zones.available.names[count.index]}"
   vpc_id            = "${aws_vpc.main.id}"
   
-  tags {
+  tags = {
     Name = "${var.tag_name}-subnet"
   }
 }
@@ -28,7 +28,7 @@ resource "aws_subnet" "main" {
 resource "aws_internet_gateway" "gw" {
   vpc_id = "${aws_vpc.main.id}"
   
-  tags {
+  tags = {
     Name = "${var.tag_name}-igw"
   }
 }
@@ -41,7 +41,7 @@ resource "aws_default_route_table" "main" {
     gateway_id = "${aws_internet_gateway.gw.id}"
   }
   
-  tags {
+  tags = {
     Name = "${var.tag_name}-rt"
   }
 }
@@ -106,12 +106,12 @@ resource "aws_instance" "devops_salt_master" {
     create_before_destroy = true
   }
   
-  tags {
+  tags = {
     Name = "${var.tag_name}-salt-master"
  }
 }
 
-## INFLUX, GRAFANA
+## SALTMINION
 
 resource "aws_security_group" "minion_sg" {
   description = "controls access to the application server"
@@ -157,7 +157,7 @@ resource "aws_security_group" "minion_sg" {
 
 data "template_file" "salt_minion_user_data" {
   template = "${file("${path.module}/salt_minion_user_data")}"
-  vars {
+  vars = {
     salt_master_ip   = "${aws_instance.devops_salt_master.private_ip}"
   }
 }
@@ -176,7 +176,7 @@ resource "aws_instance" "devops_minion_server" {
     create_before_destroy = true
   }
   
-  tags {
+  tags = {
     Name = "${var.tag_name}-minion"
  }
 }

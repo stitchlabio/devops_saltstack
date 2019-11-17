@@ -23,13 +23,12 @@ EOF
 sudo /etc/init.d/salt-master restart
 
 # Git clone to salt /srv
-#git clone http://54.71.64.51/root/sample.git /tmp/sample/
-#cp -ar /tmp/sample/saltstack/step2/* /srv/
+git clone https://github.com/stitchlabio/devops_saltstack.git /tmp/sample/
+cp -ar /tmp/sample/source/* /srv/
 
 # Salt master config
 cat <<'EOF' >> /root/salt_script.sh
 salt '*' grains.append roles influxdb
 salt '*' grains.append roles kapacitor
 salt '*' grains.append roles grafana
-salt '*' state.apply pillar='{"channel":"monitoring"}'
 EOF
